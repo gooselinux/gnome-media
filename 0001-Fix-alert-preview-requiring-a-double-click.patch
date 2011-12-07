@@ -1,0 +1,90 @@
+From 91d35724928b730fb620406172a81c317e888efe Mon Sep 17 00:00:00 2001
+From: Bastien Nocera <hadess@hadess.net>
+Date: Wed, 2 Jun 2010 15:26:02 +0100
+Subject: [PATCH] Fix alert preview requiring a double-click
+
+When an alert sound is already selected, you can only preview it
+again by double-clicking the line, or selecting another line,
+then this one again.
+---
+ sound-theme/gvc-sound-theme-chooser.c |   47 ++++++++++-----------------------
+ 1 files changed, 14 insertions(+), 33 deletions(-)
+
+diff --git a/sound-theme/gvc-sound-theme-chooser.c b/sound-theme/gvc-sound-theme-chooser.c
+index ae2fb7b..5ed8182 100644
+--- a/sound-theme/gvc-sound-theme-chooser.c
++++ b/sound-theme/gvc-sound-theme-chooser.c
+@@ -777,39 +777,23 @@ play_preview_for_path (GvcSoundThemeChooser *chooser,
+         g_free (id);
+ }
+ 
+-static void
+-on_treeview_row_activated (GtkTreeView          *treeview,
+-                           GtkTreePath          *path,
+-                           GtkTreeViewColumn    *column,
+-                           GvcSoundThemeChooser *chooser)
+-{
+-        play_preview_for_path (chooser, path);
+-}
+-
+-static void
+-on_treeview_selection_changed (GtkTreeSelection     *selection,
+-                               GvcSoundThemeChooser *chooser)
++static gboolean
++on_treeview_button_pressed (GtkTreeView *treeview,
++                            GdkEventButton *event,
++                            GvcSoundThemeChooser *chooser)
+ {
+-        GList        *paths;
+-        GtkTreeModel *model;
+         GtkTreePath  *path;
+ 
+         if (chooser->priv->treeview == NULL) {
+-                return;
++                return FALSE;
+         }
+ 
+-        model = gtk_tree_view_get_model (GTK_TREE_VIEW (chooser->priv->treeview));
+-
+-        paths = gtk_tree_selection_get_selected_rows (selection, &model);
+-        if (paths == NULL) {
+-                return;
+-        }
+-
+-        path = paths->data;
+-        play_preview_for_path (chooser, path);
++        if (gtk_tree_view_get_path_at_pos (GTK_TREE_VIEW (chooser->priv->treeview),
++                                           event->x, event->y, &path, NULL, NULL, NULL))
++                play_preview_for_path (chooser, path);
++        gtk_tree_path_free (path);
+ 
+-        g_list_foreach (paths, (GFunc)gtk_tree_path_free, NULL);
+-        g_list_free (paths);
++        return FALSE;
+ }
+ 
+ static GtkWidget *
+@@ -822,16 +806,13 @@ create_alert_treeview (GvcSoundThemeChooser *chooser)
+         GtkTreeSelection     *selection;
+ 
+         treeview = gtk_tree_view_new ();
+-        g_signal_connect (treeview,
+-                          "row-activated",
+-                          G_CALLBACK (on_treeview_row_activated),
+-                          chooser);
+ 
+         selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (treeview));
+         gtk_tree_selection_set_mode (selection, GTK_SELECTION_SINGLE);
+-        g_signal_connect (selection,
+-                          "changed",
+-                          G_CALLBACK (on_treeview_selection_changed),
++
++        g_signal_connect (treeview,
++                          "button-press-event",
++                          G_CALLBACK (on_treeview_button_pressed),
+                           chooser);
+ 
+         /* Setup the tree model, 3 columns:
+-- 
+1.7.0.1
+

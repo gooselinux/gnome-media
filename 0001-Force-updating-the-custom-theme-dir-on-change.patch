@@ -1,0 +1,57 @@
+From 6e8d5e78df35f3a327d9910343d7ceaface74d97 Mon Sep 17 00:00:00 2001
+From: Bastien Nocera <hadess@hadess.net>
+Date: Wed, 2 Jun 2010 14:35:20 +0100
+Subject: [PATCH] Force updating the custom theme dir on change
+
+When changing only the alert sound, changing the links inside
+the __custom theme will not update the directory's mtime, thus
+not trigger gnome-settings-daemon's sound module to flush
+the sound cache, and the old sound would then be used.
+
+Poke at the __custom theme dir when changing the alert sound
+fixes this.
+
+https://bugzilla.gnome.org/show_bug.cgi?id=620360
+---
+ sound-theme/gvc-sound-theme-chooser.c |   11 +++++++++++
+ 1 files changed, 11 insertions(+), 0 deletions(-)
+
+diff --git a/sound-theme/gvc-sound-theme-chooser.c b/sound-theme/gvc-sound-theme-chooser.c
+index a5d23dc..ae2fb7b 100644
+--- a/sound-theme/gvc-sound-theme-chooser.c
++++ b/sound-theme/gvc-sound-theme-chooser.c
+@@ -24,6 +24,8 @@
+ #include <stdlib.h>
+ #include <stdio.h>
+ #include <unistd.h>
++#include <utime.h>
++#include <errno.h>
+ 
+ #include <glib.h>
+ #include <glib/gi18n.h>
+@@ -517,6 +519,7 @@ save_alert_sounds (GvcSoundThemeChooser  *chooser,
+                    const char            *id)
+ {
+         const char *sounds[3] = { "bell-terminal", "bell-window-system", NULL };
++        char *path;
+ 
+         if (strcmp (id, DEFAULT_ALERT_ID) == 0) {
+                 delete_old_files (sounds);
+@@ -527,6 +530,14 @@ save_alert_sounds (GvcSoundThemeChooser  *chooser,
+                 add_custom_file (sounds, id);
+         }
+ 
++        /* And poke the directory so the theme gets updated */
++        path = custom_theme_dir_path (NULL);
++        if (utime (path, NULL) != 0) {
++                g_warning ("Failed to update mtime for directory '%s': %s",
++                           path, g_strerror (errno));
++        }
++        g_free (path);
++
+         return FALSE;
+ }
+ 
+-- 
+1.7.0.1
+

@@ -1,0 +1,48 @@
+diff -up gnome-media-2.29.91/grecord/doc/gnome-sound-recorder.omf.in.fix-omf-category gnome-media-2.29.91/grecord/doc/gnome-sound-recorder.omf.in
+--- gnome-media-2.29.91/grecord/doc/gnome-sound-recorder.omf.in.fix-omf-category	2010-05-24 17:12:44.749803540 -0400
++++ gnome-media-2.29.91/grecord/doc/gnome-sound-recorder.omf.in	2010-05-24 17:13:25.646575300 -0400
+@@ -14,7 +14,7 @@
+       2004-02-26
+     </date>
+     <version identifier="2.5" date="2004-02-26" description="Updated for GNOME 2.6, program version 2.5.2"/>
+-    <subject category="GNOME|Applications|Sound and Video"/>
++    <subject category="GNOME|Multimedia"/>
+     <description>
+       User manual for Sound Recorder. 
+     </description>
+diff -up gnome-media-2.29.91/gst-mixer/doc/gnome-volume-control.omf.in.fix-omf-category gnome-media-2.29.91/gst-mixer/doc/gnome-volume-control.omf.in
+--- gnome-media-2.29.91/gst-mixer/doc/gnome-volume-control.omf.in.fix-omf-category	2010-05-24 17:12:44.776798036 -0400
++++ gnome-media-2.29.91/gst-mixer/doc/gnome-volume-control.omf.in	2010-05-24 17:13:48.478789707 -0400
+@@ -14,7 +14,7 @@
+       2004-02-27
+     </date>
+     <version identifier="2.1" date="2004-02-27" description="Updated for program version 2.2.2"/>
+-    <subject category="GNOME|Applications|Sound and Video"/>
++    <subject category="GNOME|Multimedia"/>
+     <description>
+       User manual for the GNOME Volume Control application.
+     </description>
+diff -up gnome-media-2.29.91/gstreamer-properties/help/gstreamer-properties.omf.in.fix-omf-category gnome-media-2.29.91/gstreamer-properties/help/gstreamer-properties.omf.in
+--- gnome-media-2.29.91/gstreamer-properties/help/gstreamer-properties.omf.in.fix-omf-category	2010-05-24 17:12:44.767798209 -0400
++++ gnome-media-2.29.91/gstreamer-properties/help/gstreamer-properties.omf.in	2010-05-24 17:13:36.608551715 -0400
+@@ -14,7 +14,7 @@
+       2003-12-16
+     </date>
+     <version identifier="2.6" date="2003-12-16" description="Added for GNOME 2.6, program version 1.0"/>
+-    <subject category="GNOME|Applications|Sound and Video"/>
++    <subject category="GNOME|Multimedia"/>
+     <description>
+       User manual for GStreamer Properties. 
+     </description>
+diff -up gnome-media-2.29.91/profiles/help/gnome-audio-profiles.omf.in.fix-omf-category gnome-media-2.29.91/profiles/help/gnome-audio-profiles.omf.in
+--- gnome-media-2.29.91/profiles/help/gnome-audio-profiles.omf.in.fix-omf-category	2010-05-24 17:12:44.740801317 -0400
++++ gnome-media-2.29.91/profiles/help/gnome-audio-profiles.omf.in	2010-05-24 17:13:15.725609267 -0400
+@@ -1,7 +1,7 @@
+ <?xml version="1.0" standalone="no"?>
+ <omf>
+   <resource>
+-    <subject category="GNOME|Applications|Sound and Video"/>
++    <subject category="GNOME|Multimedia"/>
+     <type>user's guide</type>
+     <relation seriesid="0b4175ce-79cd-4155-8e4e-172ed4328c4f"/>
+     <rights type="GNU FDL" license.version="1.1" holder="GNOME Documentation Project"/>
